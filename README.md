@@ -57,7 +57,7 @@ OUTPUT:
 
 ## 2. APB_SLAVE_INTERFACE:
 
-
+![APB_SLAVE_INTERFACE](doc/img4.png)
 
 The APB Slave Interface connects the processor’s APB bus to the SPI controller. It receives read and write requests from the processor and converts them into control signals for the internal SPI blocks.
 The input signals PCLK and PRESETn provide the clock and reset for the interface. PADDR selects the SPI register address, while PWRITE indicates whether the processor is performing a write operation or a read operation. PSEL selects the SPI peripheral, and PENABLE indicates the APB access phase. PWDATA carries the data written by the processor.
@@ -77,6 +77,11 @@ When the processor writes to the SPI controller, the APB Slave Interface stores 
 The interface also receives information from the SPI data path. miso_data carries data received from the external SPI slave, receive_data contains the completed received byte, and tip indicates that an SPI transfer is in progress.
 During an APB read operation, the interface sends the requested data back to the processor through PRDATA. For example, the processor can read received SPI data or check transfer status. PREADY indicates that the APB transfer is complete, while PSLVERR indicates an invalid or failed APB access.
 The spi_interrupt_request output is used to notify the processor about important SPI events, such as transfer completion or received data availability.
+
+OUTPUT:
+![OUTPUT](doc/img5.png)
+
+## SHIFT_REG:
 
 
 
