@@ -42,6 +42,18 @@ So, in simple terms: APB gives commands, the clock-divider creates the SPI clock
 
 ## 1.BAUDRATE_GENERATOR:
 
+![BAUDRATE_GENERATOR](doc/img2.png)
+
+The Baud Rate Generator is used to generate the SPI serial clock (SCLK) from the system clock (PCLK). Since PCLK is usually much faster than the clock required by an SPI device, this block divides the system clock according to the programmed baud-rate settings.
+The baud rate is controlled using the SPPR and SPR inputs. These values decide the clock division factor and therefore determine the speed of SCLK. A larger division value produces a slower SPI clock, while a smaller division value produces a faster SPI clock.
+
+The spi_mode, CPOL, and CPHA inputs decide the clock behavior. CPOL defines the idle level of SCLK: low when CPOL = 0 and high when CPOL = 1. CPHA defines whether data is sampled on the first clock edge or the second clock edge. Thus, the baud-rate generator produces an SPI clock compatible with the selected SPI mode.
+The SS signal indicates that an SPI slave is selected. The baud generator produces clock pulses only when a transfer is active and the slave is selected. PRESETn resets the block, while PCLK provides its operating clock.
+
+Along with SCLK, the block generates timing flags such as flag_low, flag_high, flags_low, and flags_high. These flags help other blocks, especially the shift register, know when to transmit a bit, sample received data, or complete a transfer. The BaudRateDivisor output represents the calculated division value used to generate the SPI clock.
+
+
+
 
 
 
