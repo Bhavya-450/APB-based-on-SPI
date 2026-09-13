@@ -35,6 +35,7 @@ The APB Slave Interface is the entry point of the design. It receives APB signal
 The baud-rate divider generates the SPI clock, called SCLK. Since the processor clock (PCLK) is usually faster than the required SPI clock, this block divides PCLK to create a slower clock suitable for the SPI device.
 
 The shift register is the main data-transfer block. When the processor writes data, the shift register converts the parallel data into serial bits and sends them one by one on the MOSI line. At the same time, it receives serial bits from the external device through the MISO line and stores them as received data.
+
 The SPI slave-control selector chooses which external SPI device should communicate with the controller. It activates the corresponding SS or chip-select signal. Only the selected slave responds to the clock and data signals.
 
 During a transfer, the controller keeps SS active, generates SCLK, sends bits on MOSI, and receives bits on MISO. After all bits are transferred, it stops the clock, releases SS, and sets the transfer-complete status (tip becomes inactive). The processor can then read the received data through APB.
@@ -60,6 +61,7 @@ OUTPUT:
 ![APB_SLAVE_INTERFACE](doc/img4.png)
 
 The APB Slave Interface connects the processor’s APB bus to the SPI controller. It receives read and write requests from the processor and converts them into control signals for the internal SPI blocks.
+
 The input signals PCLK and PRESETn provide the clock and reset for the interface. PADDR selects the SPI register address, while PWRITE indicates whether the processor is performing a write operation or a read operation. PSEL selects the SPI peripheral, and PENABLE indicates the APB access phase. PWDATA carries the data written by the processor.
 
 When the processor writes to the SPI controller, the APB Slave Interface stores the required configuration values and generates signals such as:
@@ -75,6 +77,7 @@ When the processor writes to the SPI controller, the APB Slave Interface stores 
 - send_data and mosi_data to provide transmit data.
 - 
 The interface also receives information from the SPI data path. miso_data carries data received from the external SPI slave, receive_data contains the completed received byte, and tip indicates that an SPI transfer is in progress.
+
 During an APB read operation, the interface sends the requested data back to the processor through PRDATA. For example, the processor can read received SPI data or check transfer status. PREADY indicates that the APB transfer is complete, while PSLVERR indicates an invalid or failed APB access.
 The spi_interrupt_request output is used to notify the processor about important SPI events, such as transfer completion or received data availability.
 
