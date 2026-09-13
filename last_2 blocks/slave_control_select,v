@@ -1,0 +1,57 @@
+module spi_slave_control_select(
+    input  wire       PCLK,
+    input  wire       PRESETn,
+    input  wire       mstr,
+    input  wire       spiswai,
+    input  wire [1:0] spi_mode,         // 2-bit SPI mode input
+    input  wire       send_data,
+    input  wire [7:0] BaudRateDivisor,
+
+    output reg        receive_data,
+    output reg        ss,
+    output reg        tip
+);
+
+    reg [7:0] counter;
+    reg       start_transfer;
+
+    // SPI Clock generation logic based on BaudRateDivisor
+    always @(posedge PCLK or negedge PRESETn) begin
+        if (!PRESETn) begin
+            counter        <= 8'd0;
+            start_transfer <= 1'b0;
+        end else begin
+            if (send_data && mstr && !spiswai) begin
+                if (counter >= BaudRateDivisor) begin
+                    counter        <= 8'd0;
+                    start_transfer <= 1'b1;
+                end else begin
+                    counter <= counter + 1;
+                    start_transfer <= 1'b0;
+                end
+            end else begin
+                start_transfer <= 1'b0;
+                counter        <= 8'd0;
+            end
+        end
+    end
+
+    // Transfer in Progress (tip) and Slave Select (ss) logic
+    always @(posedge PCLK or negedge PRESETn) begin
+        if (!PRESETn) begin
+            tip          <= 1'b0;
+            ss           <= 1'b1;  // Active Low
+            receive_data <= 1'b0;
+        end else begin
+            if (start_transfer) begin
+                tip          <= 1'b1;
+                ss           <= 1'b0;
+                receive_data <= 1'b1;
+            end else begin
+                tip          <= 1'b0;
+                ss           <= 1'b1;
+                receive_data <= 1'b0;
+            end
+        end
+    end
+endmodule
