@@ -107,7 +107,34 @@ OUTPUT:
 
 ![OUTPUT](doc/img7.png)
 
-## SPI_CONTROL_SELECT :
+## SPI_SLAVE_CONTROL_SELECT :
+
+![SPI_SLAVE_CONTROL_SELECT](doc/img8.png)
+
+The SPI Slave Control Select block manages the SPI transfer and controls the slave-select signal, SS. Its main purpose is to select the required SPI slave device, start the transfer, monitor its progress, and indicate when the transfer is complete.
+The block operates using PCLK and is reset using PRESETn. The mstr input determines whether the controller works in master mode. In master mode, the controller generates the clock and controls the SS signal for the external SPI slave.
+
+The spi_mode input selects the SPI operating mode. It may define how the controller handles communication and slave selection. The spiswai signal controls SPI behavior during special conditions such as wait or stop operation.
+When valid send_data is available, the SPI Slave Control Select block begins a transfer. It activates the SS signal, which selects the external SPI slave. Normally, SS is active low, so the selected device is enabled when SS = 0.
+
+The BaudRateDivisor input represents the selected clock-division value. It is used to determine the speed of the SPI transfer. Based on this setting, the controller allows the baud-rate generator and shift register to perform the data transmission.
+
+During the transfer, the block sets the tip signal high. tip means Transfer In Progress. It remains high while data bits are being sent on MOSI and received on MISO. Once the complete data word has been transferred, the block deactivates SS, clears tip, and makes the received byte available through receive_data.
+
+OUTPUT:
+
+![OUTPUT](doc/img9.png)
+
+## CONCLUSION:
+
+The APB-based SPI controller was successfully designed to provide reliable communication between an APB processor bus and external SPI devices. The design includes an APB Slave Interface for processor access, a Baud Rate Generator for creating the SPI clock, a Shift Register for serial data transmission and reception, and an SPI Slave Control Select block for managing chip select and transfer status.
+
+The controller supports configurable SPI parameters such as clock polarity (CPOL), clock phase (CPHA), baud rate, master mode, and bit transmission order. Through APB register read/write operations, the processor can configure the SPI controller, send data, receive data, and monitor transfer completion.
+
+Overall, the project demonstrates a simple, modular, and efficient SPI peripheral architecture suitable for integration into System-on-Chip designs.
+
+![CONCLUSION](doc/img10.png)
+
 
 
 
