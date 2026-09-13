@@ -25,5 +25,7 @@ APB is well suited to this purpose because it is a simple, low-power bus intende
 
 ## Architecture(A top module):
 
+![Architecture](doc/img1.png)
+
 
 
