@@ -52,6 +52,12 @@ The SS signal indicates that an SPI slave is selected. The baud generator produc
 
 Along with SCLK, the block generates timing flags such as flag_low, flag_high, flags_low, and flags_high. These flags help other blocks, especially the shift register, know when to transmit a bit, sample received data, or complete a transfer. The BaudRateDivisor output represents the calculated division value used to generate the SPI clock.
 
+OUTPUT:
+![OUTPUT](doc/img3.png)
+
+## 2. 
+
+
 
 
 
