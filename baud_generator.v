@@ -62,5 +62,3 @@ module baud_generator (
         end
     end
 endmodule
-
-module tb_baud_rate
